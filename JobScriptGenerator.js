@@ -437,18 +437,39 @@ ScriptGen.prototype.retrieveValues = function() {
 				isValidConfiguration = false;
 				break;
 			case "gpu":
-				// Check for gpu partition constraints
-				if (this.values.gpus == 0) {
-					this.inputs.num_gpus.value = 1;
+				if (this.values.gres == "H200"){
+					// Check for H200 gpu partition constraints specifically 
+					if (this.values.gpus <= 0) {
+						this.inputs.num_gpus.value = 1;
+					}
+					if (this.values.gpus > 4) {
+						this.inputs.num_gpus.value = 4;
+						showAlert("Maximum gres per gpu for this gpu partition exceeded.");
+					} else if (this.values.num_nodes > 1) {
+						this.inputs.num_nodes.value = 1;
+						showAlert("Maximum Nodes per Job for this gpu partition is 1.");
+					} else if (this.values.cpus_per_task > 96) {
+						this.inputs.cpus_per_task.value = 96;
+						showAlert("Maximum Cores per User for the H200 GPU partition exceeded.");
+					} else {
+						break;
+					}
+					
 				}
-				if (this.values.gpus > 32) {
-					this.inputs.num_gpus.value = 32;
-					showAlert("Maximum gres per gpu for gpu partition exceeded.");
-				} else if (this.values.num_nodes > 4) {
-					this.inputs.num_nodes.value = 4;
-					showAlert("Maximum Nodes per Job for gpu partition is 4.");
-				} else {
-					break;
+				else {
+					// Check for gpu partition constraints
+					if (this.values.gpus == 0) {
+						this.inputs.num_gpus.value = 1;
+					}
+					if (this.values.gpus > 32) {
+						this.inputs.num_gpus.value = 32;
+						showAlert("Maximum gres per gpu for gpu partition exceeded.");
+					} else if (this.values.num_nodes > 4) {
+						this.inputs.num_nodes.value = 4;
+						showAlert("Maximum Nodes per Job for gpu partition is 4.");
+					} else {
+						break;
+					}
 				}
 				isValidConfiguration = false;
 				break;
