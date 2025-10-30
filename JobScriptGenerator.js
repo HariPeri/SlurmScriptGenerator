@@ -651,6 +651,7 @@ function calculateSU(values) {
 		l_a6000: { SU_CPU_hr: 0.38324504, SU_GB_hr: 0.0617059, SU_GPU_hr: 14.2725737 },
 		afton_a40: { SU_CPU_hr: 0.34022142, SU_GB_hr: 0.0198326, SU_GPU_hr: 18.6689663 },
 		l_a100_40gb: { SU_CPU_hr: 0.31058399, SU_GB_hr: 0.02915348, SU_GPU_hr: 46.3805426 },
+		l_a100_80gb: { SU_CPU_hr: 0.403, SU_GB_hr: 0.043, SU_GPU_hr: 50.89},
 		afton_H200: { SU_CPU_hr: 0.4, SU_GB_hr: 0.0269, SU_GPU_hr: 81.667 },
 		basepod: { SU_CPU_hr: 0.40287202, SU_GB_hr: 0.04342536, SU_GPU_hr: 50.8890976 }
 	};
@@ -680,7 +681,14 @@ function calculateSU(values) {
 						case 'rtx3090': gpuPricing = pricing.l_rtx3090; break;
 						case 'a6000': gpuPricing = pricing.l_a6000; break;
 						case 'a40': gpuPricing = pricing.afton_a40; break;
-						case 'a100': gpuPricing = pricing.l_a100_40gb; break;
+						case 'a100': 
+							if (values.constraint.includes('40gb')) {
+								gpuPricing = pricing.l_a100_40gb; 
+							}
+							else {
+								gpuPricing = pricing.l_a100_80gb;
+							}
+							break;
 						case 'H200': gpuPricing = pricing.afton_H200; break;
 						default: gpuPricing = pricing.basepod;
 					}
