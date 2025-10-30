@@ -675,10 +675,11 @@ function calculateSU(values) {
 					const ngcore = nnode * ngpu;
 					let gpuType = values.gres ? values.gres[0] : '';
 					let gpuPricing;
+					console.log("GPU Type: ", gpuType);
 					switch (gpuType) {
 						case 'v100': gpuPricing = pricing.v100; break;
-						case 'rtx2080': gpuPricing = pricing.l_rtx2080; break;
-						case 'rtx3090': gpuPricing = pricing.l_rtx3090; break;
+						case 'RTX2080': gpuPricing = pricing.l_rtx2080; break;
+						case 'RTX3090': gpuPricing = pricing.l_rtx3090; break;
 						case 'a6000': gpuPricing = pricing.l_a6000; break;
 						case 'a40': gpuPricing = pricing.afton_a40; break;
 						case 'a100': 
